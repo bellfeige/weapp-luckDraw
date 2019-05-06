@@ -8,7 +8,7 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"appid": "",
+	"appid": "", //your own appid
 	"projectname": "LuckyDraw",
 	"libVersion": "2.6.6",
 	"simulatorType": "wechat",
