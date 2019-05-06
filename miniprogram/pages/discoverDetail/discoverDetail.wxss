@@ -1,0 +1,100 @@
+.headNavigate {
+  width: 100%;
+  height: 8vh;
+  text-align: right;
+}
+
+.headNavigate-item {
+  margin: 20rpx;
+  padding: 10rpx;
+}
+
+.scroll-view {
+  width: 100%;
+  margin-bottom: 10rpx;
+  height: 80vh;
+}
+
+.swiper {
+  border: 5rpx;
+  padding: 2rpx;
+  width: 750rpx;
+  height: 500rpx;
+  text-align: center;
+}
+
+.swiper-image {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.content {
+  justify-content: left;
+}
+
+.content-title {
+  margin: 10rpx;
+  padding: 10rpx;
+}
+
+.content-title text {
+  font-size: 28px;
+}
+
+.content-description {
+  margin: 10rpx;
+  padding: 10rpx;
+}
+
+.admin-content {
+  margin-top: 300rpx;
+  padding: 50rpx;
+}
+
+.bottomBtn {
+  display: flex;
+  flex-direction: row;
+  height: 10vh;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottomBtn-item {
+  height: 100%;
+  width: 150rpx;
+  margin: 0 10rpx 0 10rpx;
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+}
+
+.bottomBtn-item::after {
+  border: none;
+}
+
+.bottomBtn-item text {
+  font-size: 11px;
+}
+
+.bottomBtn-item-logo {
+  height: 45rpx;
+  width: 45rpx;
+  margin-bottom: 5rpx;
+}
+
+.bottomBtn-kefu {
+  width: 100%;
+  height: 100%;
+  margin: 0 10rpx 0 10rpx;
+  padding: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottomBtn-kefu button {
+  flex-grow: 1;
+}

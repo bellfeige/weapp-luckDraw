@@ -1,0 +1,65 @@
+<!--miniprogram/pages/userInfo/userInfo.wxml-->
+<view class="container">
+
+
+  <view class="userinfo">
+
+    <view class="userinfo-avatar">
+      <block wx:if="{{hasUserInfo === false}}">
+        <image src="{{unLoginAvatarUrl}}"></image>
+      </block>
+      <block wx:elif="{{hasUserInfo === true}}">
+        <image src="{{userInfo.avatarUrl}}"></image>
+      </block>
+    </view>
+
+    <view class="userinfo-nickname">
+      <text>{{userInfo.nickName}}</text>
+    </view>
+  </view>
+
+
+  <block wx:if="{{hasUserInfo === true}}">
+    <view class="section-itemgroup">
+      <view class="section-item">
+        <view class='section-item-ib' catchtap='myParticipation'>
+          <image class="section-item-logo" src="../../images/participated.png"></image>
+          <view class="section-item-text">全部参与</view>
+            <view class="section-item-count">0</view>
+          <view class="section-item-arrow">></view>
+        </view>
+        <view class='section-item-ib' catchtap='wonPrizes'>
+          <image class="section-item-logo" src="../../images/winprizes.png"></image>
+          <view class="section-item-text">中奖记录</view>
+            <view class="section-item-count">0</view>
+          <view class="section-item-arrow">></view>
+        </view>
+      </view>
+
+
+
+      <view class="section-item">
+        <view class='section-item-ib' catchtap='gotoMyFav'>
+          <image class="section-item-logo" src="../../images/unfav.png"></image>
+          <view class="section-item-text">我的收藏</view>
+          <view class="section-item-count">{{myFavQuanlity}}</view>
+          <view class="section-item-arrow">></view>
+        </view>
+      </view>
+
+      <block wx:if="{{isAdmin === true}}">
+        <view class="section-item">
+          <button type='warn' bindtap='goAdminSetting'>管理员选项</button>
+        </view>
+      </block>
+    </view>
+  </block>
+
+  <view class="login-btn">
+    <block wx:if="{{hasUserInfo === false}}">
+      <button type="primary" open-type="getUserInfo" bindgetuserinfo="getUserInfo">微信登录</button>
+
+    </block>
+    <!-- <button bindtap="check">check</button> -->
+  </view>
+</view>

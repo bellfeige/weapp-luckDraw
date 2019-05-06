@@ -1,0 +1,62 @@
+.userinfo {
+  padding-top: 50rpx;
+}
+
+.section-itemgroup {
+  padding-top: 100rpx;
+}
+
+.section-item {
+  height: 100%;
+  width: 750rpx;
+  margin-top: 15rpx;
+  margin-bottom: 50rpx;
+}
+
+.section-item-ib {
+  display: flex;
+  border: solid 1px rgb(219, 218, 218);
+}
+
+.section-item-logo {
+  width: 50rpx;
+  height: 50rpx;
+  background-color: white;
+  padding: 20rpx;
+}
+
+.section-item-text {
+  background-color: white;
+  text-align: left;
+  padding: 20rpx 0 20rpx 0;
+}
+
+.section-item-count{
+  flex: 1;
+  background-color: white;
+  padding: 20rpx;
+}
+.section-item-arrow {
+
+  background-color: white;
+  padding: 20rpx;
+}
+
+.userinfo-avatar image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.userinfo-nickname {
+  margin: 10rpx;
+  text-align: center;
+}
+
+.login-btn {
+  text-align: center;
+  border: 1px black;
+  width: 50%;
+  margin-top: 100rpx;
+}

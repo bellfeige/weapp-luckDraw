@@ -1,0 +1,12 @@
+<view class="container">
+
+  <view class="selection">
+    <block wx:for="{{requiredData}}" wx:key='{{item._id}}'>
+      <view class='list' data-para='{{item}}' bindtap='gotoDetailPage'>
+        <image src="{{item.imgCloudUrl[0]}}" class="list-image" mode="widthFix" />
+        <view class='list-title'>{{item.title}}</view>
+      </view>
+    </block>
+  </view>
+
+</view>

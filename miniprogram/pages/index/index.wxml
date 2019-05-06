@@ -1,0 +1,61 @@
+<!--index.wxml-->
+<view class="container">
+
+  <view class="selection">
+    <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000">
+      <block wx:for="{{imgUrls}}" wx:key=''>
+        <swiper-item>
+          <image src="{{item}}" class="slide-image" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <view class="selection">
+    <view class="header">
+      <text>精品礼物</text>
+      <text class="text-all">全部礼物</text>
+    </view>
+
+    <view class="content">
+      <view class="content-item" wx:for="{{contentItems}}" wx:key=''>
+        <image src="../../images/img1.jpg" />
+        <view class="content-item-text">
+          <text>这里是标题</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="selection">
+    <view class="header">
+      <text>热门抽奖</text>
+      <text class="text-all">全部礼物</text>
+    </view>
+
+    <block class="list-item" wx:for="{{requiredData}}" wx:key='{{item._id}}'>
+      <view data-para='{{item}}' bindtap='gotoDetailPage'>
+        <view class="list-item-images">
+          <image src="{{item.imgCloudUrl[0]}}" class="list-item-images-img" mode="widthFix" />
+          <!-- <image src="../../images/user-unlogin.png" class="avatar" /> -->
+        </view>
+
+        <view class="list-item-text">
+          <view class="list-item-text-title">
+            <text>{{item.title}}</text>
+          </view>
+
+          <view class="list-item-text-content">
+            <text>{{item.description}}</text>
+          </view>
+          <view class="divLine"></view>
+        </view>
+      </view>
+    </block>
+
+
+  </view>
+
+
+</view>

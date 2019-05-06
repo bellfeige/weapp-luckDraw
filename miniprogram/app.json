@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/userInfo/userInfo",
+    "pages/chooseLib/chooseLib",
+    "pages/discover/discover",
+    "pages/appManagement/appManagement",
+    "pages/discoverDetail/discoverDetail",
+    "pages/myFavDetail/myFavDetail",
+    "pages/giftDetail/giftDetail"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "精品礼物",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#808080",
+    "selectedColor": "#09BB07",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "抽奖",
+        "iconPath": "images/icon_tabbar_home.png",
+        "selectedIconPath": "images/icon_tabbar_home_s.png"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "精品",
+        "iconPath": "images/icon_tabbar_dcv.png",
+        "selectedIconPath": "images/icon_tabbar_dcv_s.png"
+      },
+      {
+        "pagePath": "pages/userInfo/userInfo",
+        "text": "我的",
+        "iconPath": "images/icon_tabbar_me.png",
+        "selectedIconPath": "images/icon_tabbar_me_s.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "sitemapLocation": "sitemap.json"
+}

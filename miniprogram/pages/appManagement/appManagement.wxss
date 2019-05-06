@@ -1,0 +1,66 @@
+button {
+  margin-bottom: 10rpx;
+}
+
+.header {
+  text-align: center;
+  margin: 20rpx 20rpx;
+  padding: 5rpx;
+}
+
+.slide {
+  border: 5rpx;
+  padding: 2rpx;
+}
+
+.picker {
+  padding: 15rpx;
+  width: 100%;
+  margin-bottom: 25rpx;
+  background-color: #fff;
+}
+
+.selection {
+  border: 5px solid #ddd;
+  width: 100%;
+  height: 100%;
+}
+
+.upload {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.upload-item {
+  height: 160rpx;
+  width: 30%;
+  background-color: goldenrod;
+  margin: 5px;
+  position: relative;
+}
+
+.upload-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-progress {
+  margin: 5rpx;
+  text-align: center;
+  padding: 5rpx;
+}
+
+.textarea-wrp {
+  padding: 15rpx;
+  width: 100%;
+  margin-bottom: 50rpx;
+  background-color: #fff;
+}
+
+.notetext {
+  padding: 15rpx;
+  width: 80%;
+  margin: 50rpx;
+}
