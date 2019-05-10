@@ -43,7 +43,7 @@
 
         <view class="list-item-text">
           <view class="list-item-text-title">
-            <text>{{item.title}}</text>
+            <text>奖品：{{item.title}}</text>
           </view>
 
           <view class="list-item-text-content">

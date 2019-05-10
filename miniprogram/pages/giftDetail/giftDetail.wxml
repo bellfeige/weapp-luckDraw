@@ -1,34 +1,41 @@
 <view class="container">
-
   <view class='headNavigate'>
     <view class='headNavigate-item' catchtap='gotoGiftHomepage'>
       <text>返回全部</text>
     </view>
   </view>
   <scroll-view scroll-y class="scroll-view">
-
     <swiper class='swiper' autoplay="true" interval="3000" duration="1000">
-
-      <block wx:for="{{detail[0].imgCloudUrl}}" wx:key=''>
+      <block wx:for="{{detail.imgCloudUrl}}" wx:key=''>
         <swiper-item>
           <image class="swiper-image" src="{{item}}" mode="heightFix" />
         </swiper-item>
       </block>
-
     </swiper>
-
-
     <view class='content'>
       <view class='content-title'>
-        <text>{{detail[0].title}}</text>
+        <text>{{detail.title}}</text>
       </view>
       <view class='content-description'>
-        <text>{{detail[0].description}}</text>
+        <text>{{detail.description}}</text>
       </view>
     </view>
-
-
-
+    <view class="participators">
+      <view class="participators-winner">
+        <block wx:if='{{drawStatus}}'>
+          <text>恭喜 {{winnerOpenID}} 中奖</text>
+        </block>
+        <block wx:elif='{{!drawStatus}}'>
+          <text>开奖时间：{{drawTime}}</text>
+        </block>
+      </view>
+      <text>已有 {{participatorQuantity}} 人参与</text>
+      <view class="participators-avatar">
+        <block wx:for="{{avatarUrl}}" wx:key=''>
+          <image src="{{item}}" />
+        </block>
+      </view>
+    </view>
     <block wx:if='{{isSuperAdmin}}'>
       <view class='admin-content'>
         <text>该按钮仅管理员可见：</text>
@@ -37,26 +44,18 @@
     </block>
   </scroll-view>
 </view>
-
-
 <view class='bottomBtn'>
   <button class='bottomBtn-item' open-type="share" data-para='{{detail}}' catchtap='onShare'>
     <image class='bottomBtn-item-logo' src='../../images/share.png' />
     <text>分享</text>
   </button>
-
-
   <view class='bottomBtn-draw'>
-
-    <button wx:if='{{!drawed}}' class='bottomBtn-undraw' bindtap="joinLuckDraw">参与抽奖</button>
-
-
-    <button wx:if='{{drawed}}' class='bottomBtn-drawed' bindtap="joinLuckDraw">已参与</button>
-
+    <block wx:if='{{drawStatus}}'>
+      <button class='bottomBtn-drawed' bindtap="joinLuckDraw">抽取已结束</button>
+    </block>
+    <block wx:elif='{{!drawStatus}}'>
+      <button wx:if='{{!joined}}' class='bottomBtn-undraw' bindtap="joinLuckDraw">参与抽奖</button>
+      <button wx:elif='{{joined}}' class='bottomBtn-drawed' bindtap="joinLuckDraw">已参与</button>
+    </block>
   </view>
-
-
-
-
-
 </view>

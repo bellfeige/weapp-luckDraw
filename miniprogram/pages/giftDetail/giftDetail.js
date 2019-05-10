@@ -1,6 +1,7 @@
 const app = getApp()
 const db = wx.cloud.database()
-const cmd = db.command
+const _ = db.command
+
 
 Page({
 
@@ -8,10 +9,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    collected: false,
     collectionName: '',
     isSuperAdmin: false,
-    drawed: false
+    // drawStatus: false, //0 not join; 1 joined; 2 draw finished
+    joined: false,
+    winnerOpenID: ''
   },
 
   gotoGiftHomepage: function () {
@@ -34,33 +36,97 @@ Page({
     if (!app.globalData.hasLogin) {
       that.checkLogin()
     } else {
-      console.log('can jia')
+      console.log(that.data.drawStatus)
+      if (that.data.joined) {
+        console.log('joined')
+      } else if (that.data.drawStatus) {
+        console.log('draw finished')
+      } else if (!that.data.joined) {
+        wx.showLoading({
+          title: '加载中...',
+        })
+        wx.cloud.callFunction({
+          name: 'runDB',
+          data: {
+            db: 'giftList',
+            type: 'updateOnPush',
+            _id: that.data.contentId,
+            value: app.globalData.openid,
+            avatarUrl: app.appData.userInfo.avatarUrl
+
+            // action: { participators: _.push('2') },
+            // action: { participators: ['1'] } //this works
+
+
+          },
+          success(res) {
+            console.log(res)
+            that.setData({
+              joined: true,
+            })
+            that.getDrawInfo()
+          },
+          fail(err) {
+            console.error(err)
+          },
+          complete() {
+            wx.hideLoading()
+          }
+        })
+
+
+      }
     }
 
   },
 
-  runCloudDB: function (name, db, type) {
+  getDrawInfo: function () {
     var that = this
+    wx.showLoading({
+      title: '加载中...',
+    })
     wx.cloud.callFunction({
-      name: name,
+      name: 'runDB',
       data: {
-        db: db, //collection name
-        type: type, //action to take
-        condition: {
-          giftList_ID: that.data.contentId
-        },
-        data: {
+        db: 'giftList',
+        type: 'getbyID',
+        _id: that.data.contentId
 
-        }
       },
-      success: res => {
+      success(res) {
         console.log(res.result)
+
+        that.setData({
+          detail: res.result.data,
+          avatarUrl: res.result.data.avatarUrl,
+          participatorQuantity: res.result.data.participators.length,
+          drawStatus: res.result.data.drawStatus,
+          drawTime:res.result.data.showDrawTime
+
+        })
+        if (res.result.data.drawStatus) {
+          that.setData({
+            winnerOpenID: res.result.data.winnerOpenID,
+          })
+        }
+        if (app.globalData.hasLogin) {
+          that.checkjoin()
+        }
+
+
       },
-      fail: err => {
+      fail(err) {
         console.error(err)
+      },
+      complete() {
+        wx.hideLoading()
       }
     })
   },
+
+
+
+
 
 
   delThisDetail: function () {
@@ -74,7 +140,7 @@ Page({
             title: '正在删除...',
           })
           wx.cloud.deleteFile({
-            fileList: that.data.detail[0].imgCloudUrl,
+            fileList: that.data.detail.imgCloudUrl,
             success: res => {
               console.log(res.fileList)
 
@@ -82,7 +148,7 @@ Page({
                 success() {
                   console.log('giftList record deleted')
 
-                  that.runCloudDB('runDB', 'giftUser', 'delete')
+
                   wx.navigateBack()
                 },
                 fail() {
@@ -99,6 +165,36 @@ Page({
           console.log('用户点击取消')
         }
       }
+    })
+
+  },
+
+  checkjoin: function () {
+    var that = this
+    var join = wx.cloud.callFunction({
+      name: 'runDB',
+      data: {
+        db: 'giftList',
+        type: 'checkDrawJoin',
+        _id: that.data.contentId,
+        openid: app.globalData.openid
+      },
+      success(res) {
+        console.log(res.result)
+
+        if (!that.data.drawStatus) {
+
+          that.setData({
+            joined: res.result ? true : false
+          })
+        }
+
+
+      },
+      fail(err) {
+        console.error(err)
+      }
+
     })
 
   },
@@ -128,35 +224,14 @@ Page({
     var that = this
     // console.log(o)
     // console.log(app.globalData.isAdmin)
-    wx.showLoading({
-      title: '加载中...',
-    })
+ 
 
     that.setData({
       contentId: o.id,
       isSuperAdmin: app.globalData.isSuperAdmin
     })
 
-
-    const db = wx.cloud.database()
-    db.collection('giftList').where({
-      _id: that.data.contentId
-    }).get({
-      success(res) {
-        // res.data 包含该记录的数据
-        // console.log(res.data)
-        // var collectData = [].concat(res.data)
-        that.setData({
-          detail: res.data
-        })
-        // console.log(detail[0].title)
-        // console.log(detail[0].description)
-      },
-      complete() {
-        wx.hideLoading()
-      }
-    })
-
+    that.getDrawInfo()
 
 
   },

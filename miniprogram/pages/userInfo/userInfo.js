@@ -15,15 +15,15 @@ Page({
     unLoginAvatarUrl: '../../images/user-unlogin.png'
   },
 
-  myParticipation: function() {
+  myParticipation: function () {
     console.log('allParticipated')
   },
 
-  wonPrizes: function() {
+  wonPrizes: function () {
     console.log('wonPrizes')
   },
 
-  gotoMyFav: function() {
+  gotoMyFav: function () {
     // console.log('myFav')
     if (this.data.myFavQuanlity == 0) {
       wx.showToast({
@@ -38,7 +38,7 @@ Page({
     }
   },
 
-  getQuanlity: function() {
+  getQuanlity: function () {
     var that = this
     db.collection('myFav').where({
       _openid: app.globalData.openid
@@ -52,7 +52,7 @@ Page({
     })
   },
 
-  userLogin: function() {
+  userLogin: function () {
     var that = this
     wx.cloud.callFunction({
       name: 'isAdmin',
@@ -88,10 +88,10 @@ Page({
               })
               app.globalData.isSuperAdmin = true
             }
-            that.setData({
-              hasLogin: true
-            })
-            app.globalData.hasLogin = true
+            // that.setData({
+            //   hasLogin: true
+            // })
+
 
             // wx.navigateTo({
             //   url: '../userConsole/userConsole',
@@ -114,31 +114,31 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
 
-    this.userLogin()
-    // this.setData({
-    //   isAdmin: app.globalData.isAdmin,
-    //   hasLogin: app.globalData.hasLogin
-    // })
+    // this.userLogin()
+
 
 
 
 
   },
 
-  getUserInfo: function(info) {
+  getUserInfo: function (info) {
     const userInfo = info.detail.userInfo
     app.appData.userInfo = userInfo
     if (app.appData.userInfo) {
       this.setData({
         userInfo,
-        hasUserInfo: true
+        hasUserInfo: true,
+        hasLogin: true
       })
+      this.userLogin()
     }
+
   },
 
-  goAdminSetting: function() {
+  goAdminSetting: function () {
     console.log("page isAdmin is " + this.data.isAdmin)
     console.log("Global isAdmin is " + app.globalData.isAdmin)
     wx.navigateTo({
@@ -151,49 +151,49 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     this.getQuanlity()
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
 

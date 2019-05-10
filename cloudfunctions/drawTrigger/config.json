@@ -1,0 +1,11 @@
+{
+
+  "triggers": [
+
+    {
+      "name": "goDraw",
+      "type": "timer",
+      "config": "0 */1 * * * * *"
+    }
+  ]
+}
