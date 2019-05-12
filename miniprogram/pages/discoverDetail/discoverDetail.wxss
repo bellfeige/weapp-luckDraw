@@ -19,7 +19,7 @@
   border: 5rpx;
   padding: 2rpx;
   width: 750rpx;
-  height: 500rpx;
+  height: 550rpx;
   text-align: center;
 }
 

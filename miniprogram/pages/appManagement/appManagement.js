@@ -11,7 +11,6 @@ Page({
     targetCollectionIndex: 0,
     // targetCollection:'discover',
     imgUrl: [],
-    storageFolder: 'discover/',
     title: '',
     description: '',
     isDisabled: true,
@@ -20,26 +19,27 @@ Page({
 
   },
 
-  getTime: function () {
+  // getTime: function () {
 
-    var date = new Date();
-    var Y = date.getFullYear();
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
-    var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-    var h = date.getHours();
-    var m = date.getMinutes();
-    var s = date.getSeconds();
-    var nowTime = Y + M + D + h + m + s
-    // console.log("当前时间：" + nowTime);
-    return nowTime
+  //   var date = new Date();
+  //   var Y = date.getFullYear();
+  //   var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+  //   var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  //   var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  //   var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  //   var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  //   var nowTime = Y + M + D + h + m + s
+  //   // console.log("当前时间：" + nowTime);
+  //   return nowTime
 
-  },
+  // },
 
   collectionPicker: function (e) {
+    var that = this
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       targetCollectionIndex: e.detail.value,
-      storageFolder: 'gifts/'
+      storageFolder: 'gifts/' + that.drawExecDate(0, 2) + '/'
     })
   },
 
@@ -50,13 +50,14 @@ Page({
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
+
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         const filePathArray = res.tempFilePaths
         //console.log(filePathArray)
         var cloudPath = new Array()
         for (let i = 0; i < filePathArray.length; i++) {
           const fileName = +Math.random() * 1000
-          cloudPath.push(that.data.storageFolder + that.getTime() + fileName + filePathArray[i].match(/\.[^.]+?$/)[0])
+          cloudPath.push(that.data.storageFolder + that.drawExecDate(0, 2) + fileName + filePathArray[i].match(/\.[^.]+?$/)[0])
           that.setData({
             // flp: filePath,
             flpa: filePathArray,
@@ -234,8 +235,8 @@ Page({
             createDate: new Date(),
             participators: [],
             drawStatus: false,
-            execTime: that.drawExecDate(3,0),
-            showDrawTime: that.drawExecDate(3,1),
+            execTime: that.drawExecDate(3, 0),
+            showDrawTime: that.drawExecDate(3, 1),
             avatarUrl: []
           },
           success(res) {
@@ -271,9 +272,12 @@ Page({
     var dd;
     dd = new Date();
     dd.setDate(dd.getDate() + addDayCount); //获取AddDayCount天后的日期 
-    dd.setHours(10)
-    dd.setMinutes(0)
-    dd.setSeconds(0)
+    if (type === 0 || type === 1) {
+      dd.setHours(10)
+      dd.setMinutes(0)
+      dd.setSeconds(0)
+    }
+
 
 
     var year = dd.getFullYear();
@@ -302,10 +306,13 @@ Page({
 
     // var drawDate = year + '-' + month + '-' + day
     const drawDate = year + '-' + month + '-' + day + ' ' + h + ':' + m + ':' + s;
+    const formDate = year + month + day + h + m + s;
     if (type === 0) {
       return dd;
     } else if (type === 1) {
       return drawDate
+    } else if (type === 2) {
+      return formDate
     }
 
   },
@@ -314,11 +321,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     this.setData({
-      isSuperAdmin: app.globalData.isSuperAdmin
+      isSuperAdmin: app.globalData.isSuperAdmin,
+      storageFolder: 'discover/' + that.drawExecDate(0, 2) + '/',
     })
     console.log('isSuperAdmin = ' + this.data.isSuperAdmin)
-  
+
   },
 
   /**

@@ -7,7 +7,9 @@
     "pages/appManagement/appManagement",
     "pages/discoverDetail/discoverDetail",
     "pages/myFavDetail/myFavDetail",
-    "pages/giftDetail/giftDetail"
+    "pages/giftDetail/giftDetail",
+    "pages/myParticipationDetail/myParticipationDetail",
+    "pages/myWonList/myWonList"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -44,6 +46,5 @@
     "request": 10000,
     "downloadFile": 10000
   },
-
   "sitemapLocation": "sitemap.json"
 }

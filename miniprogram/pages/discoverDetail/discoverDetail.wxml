@@ -11,7 +11,7 @@
 
       <block wx:for="{{detail[0].imgCloudUrl}}" wx:key=''>
         <swiper-item>
-          <image class="swiper-image" src="{{item}}" mode="heightFix" />
+          <image class="swiper-image" src="{{item}}" mode="aspectFit" />
         </swiper-item>
       </block>
 

@@ -3,20 +3,32 @@ const app = getApp()
 const db = wx.cloud.database()
 Page({
   data: {
-    imgUrls: [
-      'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-      'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-      'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-    ],
-    contentItems: ['', '', '', ''],
-    listItems: ['', '', '', '', '', '', ''],
-    listItemsUrl: null,
-
+    swiperData: [],
     requiredData: [],
     title: '',
     description: '',
-    dataRequireLimit: 5,
+    dataRequireLimit: 10,
     dataRequireSkip: 0,
+  },
+
+  requireSwiperData: function() {
+    var that = this
+    wx.cloud.callFunction({
+      name: 'runDB',
+      data: {
+        db: 'discover',
+        type: 'get',
+        orderByKey: 'createDate',
+        descOResc: 'desc',
+        limit: 3
+      },
+      success(res) {
+        // console.log(res.result.data)
+        that.setData({
+          swiperData: res.result.data
+        })
+      }
+    })
   },
 
   requireData: function(skip, limit, moreData) {
@@ -52,7 +64,7 @@ Page({
 
   },
 
-  dataQuanlity: function () {
+  dataQuanlity: function() {
     var that = this
     db.collection('giftList').count({
       success(res) {
@@ -65,7 +77,24 @@ Page({
     })
   },
 
-  gotoDetailPage: function (e) {
+  gotoSwiperDetailPage: function(e) {
+    // console.log(e)
+    var id = e.currentTarget.dataset.para._id
+    // console.log(id)
+    wx.navigateTo({
+      url: '../discoverDetail/discoverDetail?&id=' + id,
+
+      success(res) {
+        // console.log('navigateTo succeed')
+      },
+      fail(err) {
+        console.error(err)
+      }
+    })
+  },
+
+
+  gotoDetailPage: function(e) {
     //console.log(e)
     var id = e.currentTarget.dataset.para._id
     // console.log(id)
@@ -75,8 +104,8 @@ Page({
       success(res) {
         // console.log('navigateTo succeed')
       },
-      fail() {
-        console.log('navigateTo failed')
+      fail(err) {
+        console.error(err)
       }
     })
   },
@@ -90,11 +119,12 @@ Page({
     }
     this.dataQuanlity()
     this.requireData(this.data.dataRequireSkip, this.data.dataRequireLimit, false)
+    this.requireSwiperData()
 
 
   },
 
-  onReachBottom: function () {
+  onReachBottom: function() {
 
     var that = this
     console.log(that.data.requiredData.length)
@@ -113,13 +143,14 @@ Page({
     }
   },
 
-  onShow: function () {
+  onShow: function() {
     this.requireData(0, this.data.requiredData.length, false)
     this.dataQuanlity()
+    this.requireSwiperData()
     wx.stopPullDownRefresh(); //停止下拉刷新
   },
 
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     var that = this
     that.onShow()
   },

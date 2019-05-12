@@ -1,46 +1,53 @@
 .list {
-  /* border-bottom: 1px solid gray; */
-  padding: 20rpx;
-  width: 100%;
-  height: 100%;
-  margin-bottom: 80rpx;
+    padding: 20rpx;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 80rpx;
 }
 
-.list-image {
+
+/* .list-image {
   text-align: center;
-}
+} */
 
 .list-image image {
-  width: 90%;
+    width: 100%;
+}
+
+.list-title-content {
+    margin-left: 15rpx 15rpx 15rpx 15rpx;
 }
 
 .list-title {
-  padding: 0 15rpx 5rpx 15rpx;
-  margin-left: 35rpx;
-  font-size: 18px;
+    padding: 0 15rpx 5rpx 15rpx;
+    font-size: 15px;
 }
 
 .list-content {
-  font-size: 10px;
-  color: #999;
-  padding: 0 15rpx 5rpx 15rpx;
-  margin-left: 35rpx;
-  margin-top: 15rpx;
+    font-size: 10px;
+    color: #999;
+    padding: 0 15rpx 5rpx 15rpx;
+    /* margin-left: 15rpx;
+    margin-top: 15rpx; */
 }
 
+
 /* 横着的分割View样式 */
+
+
 /*分割线样式*/
+
 .divLine {
-  background: #e0e3da;
-  width: 100%;
-  height: 5rpx;
+    background: #e0e3da;
+    width: 100%;
+    height: 5rpx;
 }
 
 .selection {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

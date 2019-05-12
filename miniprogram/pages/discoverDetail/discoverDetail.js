@@ -28,14 +28,16 @@ Page({
   addRemoveFav: function () {
     var that = this
     if (!app.globalData.hasLogin) {
-      console.log('not logined')
+      console.log('not login')
       that.checkLogin()
     } else {
       if (!that.data.collected) {
-        db.collection('myFav').add({
+        db.collection('myInfo').add({
           data: {
             detailID: that.data.contentId,
-            createDate: new Date()
+            createDate: new Date(),
+            type:'fav'
+
           },
           success(res) {
             console.log(res._id)
@@ -52,8 +54,8 @@ Page({
           fail: console.error
         })
       } else {
-        console.log('remove fav')
-        db.collection('myFav').doc(that.data.fID).remove({
+        console.log('try remove fav')
+        db.collection('myInfo').doc(that.data.fID).remove({
           success(res) {
             console.log(res)
             that.setData({
@@ -72,7 +74,7 @@ Page({
   },
 
   gotoContact: function () {
-    var current = 'cloud://demo-011111.6465-demo/const/qrcode.png'
+    var current = 'cloud://demo-011111.6465-demo/const/JJQR.jpg'
     wx.previewImage({
       current: current,
       urls: [current]
@@ -125,7 +127,7 @@ Page({
                 success(res) {
                   console.log('discover record deleted')
 
-                  that.runCloudDB('runDB', 'myFav', 'delete')
+                  that.runCloudDB('runDB', 'myInfo', 'delete')
                   wx.navigateBack()
 
                 },
@@ -165,7 +167,7 @@ Page({
 
   checkFav: function () {
     var that = this
-    db.collection('myFav').where({
+    db.collection('myInfo').where({
       _openid: app.globalData.openid,
       detailID: that.data.contentId
     }).get({

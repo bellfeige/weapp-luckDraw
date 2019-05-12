@@ -1,5 +1,11 @@
 .userinfo {
   padding-top: 50rpx;
+  text-align: center;
+  background: none;
+}
+
+.userinfo::after {
+  border: none;
 }
 
 .section-itemgroup {
