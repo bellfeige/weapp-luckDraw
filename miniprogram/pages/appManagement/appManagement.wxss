@@ -59,6 +59,13 @@ button {
   background-color: #fff;
 }
 
+.textarea-drawAfterDays {
+  padding: 15rpx;
+  width: 250rpx;
+  margin-bottom: 50rpx;
+  background-color: #fff;
+}
+
 .notetext {
   padding: 15rpx;
   width: 80%;

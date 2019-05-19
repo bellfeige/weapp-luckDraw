@@ -16,7 +16,12 @@ Page({
     isDisabled: true,
     choosePicDisabled: true,
     uploadProgPer: 0,
-
+    // drawExecDate: new Date()
+    drawAfterDays: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20],
+    drawAfterDaysIndex: 0,
+    drawWhenTime: [10, 12, 14, 16, 18, 20, 22],
+    drawWhenTimeIndex: 0,
+    needSetTime: false,
   },
 
   // getTime: function () {
@@ -36,12 +41,37 @@ Page({
 
   collectionPicker: function (e) {
     var that = this
-    console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.setData({
+    console.log('collection=', e.detail.value)
+    that.setData({
       targetCollectionIndex: e.detail.value,
-      storageFolder: 'gifts/' + that.drawExecDate(0, 2) + '/'
+      storageFolder: 'gifts/' + that.drawExecDate(0, 0, 2) + '/',
+
+    })
+
+    if (e.detail.value == 1) {
+      that.setData({
+        needSetTime: true,
+      })
+    }
+  },
+
+  afterDaysPicker: function (e) {
+    var that = this
+    console.log('afterDaysPicker=', that.data.drawAfterDays[that.data.drawAfterDaysIndex])
+    that.setData({
+      drawAfterDaysIndex: e.detail.value,
     })
   },
+
+  timePicker: function (e) {
+    var that = this
+    console.log('timePicker=', e.detail.value)
+    that.setData({
+      drawWhenTimeIndex: e.detail.value,
+    })
+  },
+
+
 
   addImg: function () {
     var that = this
@@ -57,7 +87,9 @@ Page({
         var cloudPath = new Array()
         for (let i = 0; i < filePathArray.length; i++) {
           const fileName = +Math.random() * 1000
-          cloudPath.push(that.data.storageFolder + that.drawExecDate(0, 2) + fileName + filePathArray[i].match(/\.[^.]+?$/)[0])
+          cloudPath.push(that.data.storageFolder + that.drawExecDate(that.data.drawAfterDays[that.data.drawAfterDaysIndex],
+            that.data.drawWhenTime[that.data.drawWhenTimeIndex],
+            2) + fileName + filePathArray[i].match(/\.[^.]+?$/)[0])
           that.setData({
             // flp: filePath,
             flpa: filePathArray,
@@ -235,9 +267,13 @@ Page({
             createDate: new Date(),
             participators: [],
             drawStatus: false,
-            execTime: that.drawExecDate(3, 0),
-            showDrawTime: that.drawExecDate(3, 1),
-            avatarUrl: []
+            execTime: that.drawExecDate(that.data.drawAfterDays[that.data.drawAfterDaysIndex],
+              that.data.drawWhenTime[that.data.drawWhenTimeIndex],
+              0),
+            showDrawTime: that.drawExecDate(that.data.drawAfterDays[that.data.drawAfterDaysIndex],
+              that.data.drawWhenTime[that.data.drawWhenTimeIndex],
+              1),
+            participatorInfo: []
           },
           success(res) {
             console.log(res)
@@ -268,12 +304,40 @@ Page({
     }
   },
 
-  drawExecDate: function (addDayCount, type) {
+  calDrawExecData: function () {
+    var that = this
+    let tempDrawExecDate = that.drawExecDate(that.data.drawAfterDays[that.data.drawAfterDaysIndex],
+      that.data.drawWhenTime[that.data.drawWhenTimeIndex],
+      1)
+
+    console.log(tempDrawExecDate)
+    that.setData({
+      drawExecDate: tempDrawExecDate
+    })
+  },
+
+  // setDrawAddDayCount: function (e) {
+  //   var that = this
+  //   console.log(e.detail.value)
+
+  //   let addDaysNo = parseInt(e.detail.value)
+  //   that.setData({
+  //     addDayCount: addDaysNo
+  //   })
+  //   let tempDate = that.drawExecDate(addDaysNo, 11, 1)
+  //   console.log(tempDate)
+  //   that.setData({
+  //     drawExecDate: tempDate
+  //   })
+
+  // },
+
+  drawExecDate: function (addDayCount, hh, type) {
     var dd;
     dd = new Date();
     dd.setDate(dd.getDate() + addDayCount); //获取AddDayCount天后的日期 
     if (type === 0 || type === 1) {
-      dd.setHours(10)
+      dd.setHours(hh)
       dd.setMinutes(0)
       dd.setSeconds(0)
     }
@@ -305,7 +369,7 @@ Page({
     dd
 
     // var drawDate = year + '-' + month + '-' + day
-    const drawDate = year + '-' + month + '-' + day + ' ' + h + ':' + m + ':' + s;
+    const drawDate = year + '-' + month + '-' + day + ' ' + h + ':' + m;
     const formDate = year + month + day + h + m + s;
     if (type === 0) {
       return dd;
@@ -320,11 +384,11 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function () {
     var that = this
     this.setData({
       isSuperAdmin: app.globalData.isSuperAdmin,
-      storageFolder: 'discover/' + that.drawExecDate(0, 2) + '/',
+      storageFolder: 'discover/' + that.drawExecDate(0, 0, 2) + '/',
     })
     console.log('isSuperAdmin = ' + this.data.isSuperAdmin)
 

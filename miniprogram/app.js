@@ -69,7 +69,7 @@ App({
 
 
   onLaunch: function () {
-
+    var that = this
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -79,6 +79,33 @@ App({
         env: 'produce-zam1a',
       })
       this.userLogin()
+
+      try {
+        const localUserInfo = wx.getStorageSync('userInfo')
+        if (localUserInfo) {
+          console.log(localUserInfo)
+          that.appData.userInfo = localUserInfo
+        }
+      } catch (e) {
+        console.error(e)
+      }
+
+      // try {
+      //   wx.clearStorageSync()
+      // } catch (e) {
+      //   // Do something when catch error
+      // }
+
+      // try {
+      //   const res = wx.getStorageInfoSync()
+      //   console.log(res.keys)
+      //   // console.log(res.currentSize)
+      //   // console.log(res.limitSize)
+      // } catch (e) {
+      //   // Do something when catch error
+      // }
+
+
 
     }
 

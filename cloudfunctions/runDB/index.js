@@ -55,7 +55,7 @@ exports.main = async(event, context) => {
       .update({
         data: {
           participators: _.push(event.value),
-          avatarUrl: _.push(event.avatarUrl)
+          participatorInfo: _.push(event.participatorInfo)
         }
       })
     }

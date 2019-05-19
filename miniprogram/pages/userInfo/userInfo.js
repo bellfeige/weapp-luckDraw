@@ -15,12 +15,12 @@ Page({
     unLoginAvatarUrl: '../../images/user-unlogin.png'
   },
 
-  gotoMyParticipation: function() {
+  gotoMyParticipation: function () {
     if (this.data.myParticipatedQuanlity === 0) {
       wx.showToast({
         title: '暂无参加任何抽奖',
         'icon': 'none',
-        duration: 3000
+        duration: 2000
       })
     } else {
       wx.navigateTo({
@@ -30,12 +30,12 @@ Page({
 
   },
 
-  gotoWonPrizes: function() {
+  gotoWonPrizes: function () {
     if (this.data.myWonQuanlity === 0) {
       wx.showToast({
         title: '暂无中奖',
         'icon': 'none',
-        duration: 3000
+        duration: 2000
       })
     } else {
       wx.navigateTo({
@@ -44,13 +44,13 @@ Page({
     }
   },
 
-  gotoMyFav: function() {
+  gotoMyFav: function () {
     // console.log('myFav')
     if (this.data.myFavQuanlity === 0) {
       wx.showToast({
-        title: '暂无收藏',
+        title: '暂无任何收藏',
         'icon': 'none',
-        duration: 3000
+        duration: 2000
       })
     } else {
       wx.navigateTo({
@@ -59,7 +59,7 @@ Page({
     }
   },
 
-  getQuanlity: function(myOpenid) {
+  getQuanlity: function (myOpenid) {
     var that = this
 
     //get fav quanlity
@@ -74,7 +74,7 @@ Page({
           myFavQuanlity: res.data.length
         })
       },
-  
+
     })
 
     //get participated quanlity
@@ -103,88 +103,42 @@ Page({
       }
     })
 
+    //get check in quanlity
+
   },
 
-  // userLogin: function() {
-  //   var that = this
-  //   wx.cloud.callFunction({
-  //     name: 'isAdmin',
-  //     data: {},
-  //     success(res) {
-  //       // console.log(res.result.data)
-  //       var a = res.result.data[0].adminOpenIDs;
-  //       // console.log(a)
-  //       var sa = res.result.data[0].superadminOpenIDs
-  //       // console.log(sa)
-
-  //       wx.cloud.callFunction({
-  //         name: 'login',
-  //         data: {},
-  //         success(res) {
-  //           console.log('[云函数] [login] user openid: ' + res.result.openid)
-  //           app.globalData.openid = res.result.openid
-  //           app.globalData.hasLogin = true
-  //           // console.log(app.globalData.openid)
-  //           // console.log(app.globalData.hasLogin)
-
-  //           if (a.includes(res.result.openid)) {
-  //             // console.log("is admin")
-  //             that.setData({
-  //               isAdmin: true
-  //             })
-  //             app.globalData.isAdmin = true
-  //           }
-  //           if (sa.includes(res.result.openid)) {
-  //             // console.log("is superadmin")
-  //             that.setData({
-  //               isSuperAdmin: true
-  //             })
-  //             app.globalData.isSuperAdmin = true
-  //           }
-
-  //           that.getQuanlity(res.result.openid)
-  //           // that.getAddCollectionMyInfo(res.result.openid)
-  //         },
-  //         fail: err => {
-  //           console.error('[云函数] [login] 调用失败', err)
-  //           wx.showToast({
-  //             title: '登录失败，请检查网络连接是否正常，然后重新打开小程序',
-  //             'icon': 'none',
-  //             duration: 3000
-  //           })
-
-  //         },
-
-  //       })
 
 
-  //     }
-  //   })
-
-  // },
-
-
-
-  getUserInfo: function(info) {
+  getUserInfo: function (info) {
+    var that = this
     // wx.showLoading({
     //   title: '加载中...',
     // })
     const userInfo = info.detail.userInfo
     // console.log(userInfo)
-    app.appData.userInfo = userInfo
-    if (app.appData.userInfo) {
-      this.setData({
-        userInfo: userInfo,
-        hasUserInfo: true,
-        hasLogin: true
-      })
-      // this.userLogin()
+    try {
+      const localUserInfo = wx.getStorageSync('userInfo')
+      if (!localUserInfo || localUserInfo == null) {
+        wx.setStorage({
+          key: 'userInfo',
+          data: userInfo
+        })
+        this.setData({
+          userInfo: userInfo,
+          hasUserInfo: true,
+          hasLogin: true
+        })
+      }
+
+    } catch (e) {
+      console.error(e)
     }
+
 
   },
 
 
-  goAdminSetting: function() {
+  goAdminSetting: function () {
     console.log("page isAdmin is " + this.data.isAdmin)
     console.log("Global isAdmin is " + app.globalData.isAdmin)
     wx.navigateTo({
@@ -192,31 +146,53 @@ Page({
     })
   },
 
-
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
+    var that = this
+    setTimeout(function () {
+      if (app.globalData.openid !== null) {
+        that.getQuanlity(app.globalData.openid)
+        that.setData({
+          isAdmin: app.globalData.isAdmin,
+          isSuperAdmin: app.globalData.isSuperAdmin
+        })
+      }
+    }, 2500)
 
-    this.getQuanlity(app.globalData.openid)
-    this.setData({
-      isAdmin:app.globalData.isAdmin,
-      isSuperAdmin:app.globalData.isSuperAdmin
-    })
+    try {
+      const localUserInfo = wx.getStorageSync('userInfo')
+      if (localUserInfo) {
+        console.log(localUserInfo)
+        app.appData.userInfo = localUserInfo
+        // if (app.appData.userInfo) {
+        this.setData({
+          userInfo: localUserInfo,
+          hasUserInfo: true,
+          hasLogin: true
+        })
+        // }
+
+      }
+    } catch (e) {
+      console.error(e)
+    }
+
 
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     if (app.globalData.openid !== null) {
       this.getQuanlity(app.globalData.openid)
     }
@@ -226,35 +202,35 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
 

@@ -5,12 +5,12 @@ cloud.init({
 })
 const db = cloud.database()
 
-exports.main = async(event, context) => {
+exports.main = async (event, context) => {
   const execTasks = []; // 待执行任务栈
   // 1.查询是否有定时任务。（timeingTask)集合是否有数据。
   let taskRes = await db.collection('giftList').where({
-      drawStatus: false
-    })
+    drawStatus: false
+  })
     .limit(100)
     .orderBy('createDate', 'desc').get()
   let tasks = taskRes.data;
@@ -38,12 +38,13 @@ exports.main = async(event, context) => {
 
     if (!task.drawStatus) {
       try {
-        var c = await cloud.callFunction({
+        await cloud.callFunction({
           name: 'drawWinner',
           data: {
             db: 'giftList',
             _id: task._id,
-            participators: task.participators
+            participators: task.participators,
+            title: task.title,
           },
         })
 

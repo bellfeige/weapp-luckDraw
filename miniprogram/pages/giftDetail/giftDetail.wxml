@@ -42,14 +42,18 @@
           <view>
             <text>已于{{drawTime}}开奖</text>
           </view>
+          <view >
+          中奖名单：
+          
+          </view>
           <view>
             <text>感谢 {{participatorQuantity}} 人参与</text>
           </view>
         </block>
       </view>
       <view class="drawResult-avatar">
-        <block wx:for="{{avatarUrl}}" wx:key=''>
-          <image src="{{item}}" />
+        <block wx:for="{{participatorInfo}}" wx:key=''>
+          <image src="{{item.avatarUrl}}" />
         </block>
       </view>
     </view>
@@ -68,11 +72,16 @@
   </button>
   <view class='bottomBtn-draw'>
     <block wx:if='{{drawStatus}}'>
-      <button class='bottomBtn-drawed' >抽取已结束</button>
+      <button class='bottomBtn-drawed'>抽取已结束</button>
     </block>
     <block wx:elif='{{!drawStatus}}'>
-      <button wx:if='{{!joined}}' class='bottomBtn-undraw' bindtap="checkLogin">参与抽奖</button>
-      <button wx:elif='{{joined}}' class='bottomBtn-drawed' >已参与</button>
+      <form report-submit='{{true}}' bindsubmit='addJoinToMyinfo' class='bottomBtn-undraw'>
+        <button wx:if='{{!joined}}' disabled="{{buttonDisabled}}" class='bottomBtn-undraw-un' formType="submit" open-type="getUserInfo"  bindtap="checkLogin">
+          参与抽奖
+        </button>
+      
+      <button wx:elif='{{joined}}' class='bottomBtn-drawed'>已参与</button>
+      </form>
     </block>
   </view>
 </view>

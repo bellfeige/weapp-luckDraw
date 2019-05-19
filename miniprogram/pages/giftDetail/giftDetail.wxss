@@ -124,6 +124,9 @@
 
 .bottomBtn-undraw {
     flex-grow: 1;
+}
+
+.bottomBtn-undraw-un {
     background-color: rgb(250, 123, 144);
 }
 

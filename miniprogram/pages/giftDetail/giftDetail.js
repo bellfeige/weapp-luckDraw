@@ -12,6 +12,7 @@ Page({
         collectionName: '',
         isSuperAdmin: false,
         joined: false,
+        buttonDisabled: true,
         iWon: false,
         winnerOpenID: ''
     },
@@ -31,6 +32,9 @@ Page({
 
 
     joinLuckDraw: function () {
+        wx.showLoading({
+            title: '正在加入抽奖...',
+        })
 
         var that = this;
 
@@ -47,16 +51,17 @@ Page({
                     type: 'updateOnPush',
                     _id: that.data.contentId,
                     value: app.globalData.openid,
-                    avatarUrl: app.appData.userInfo.avatarUrl
+                    participatorInfo: app.appData.userInfo
 
                 },
                 success(res) {
                     console.log(res)
+                    that.getDrawInfo()
                     that.setData({
                         joined: true,
                     })
                     that.addJoinToMyinfo()
-                    that.getDrawInfo()
+
                 },
                 fail(err) {
                     console.error(err)
@@ -72,13 +77,15 @@ Page({
 
     },
 
-    addJoinToMyinfo: function () {
+    addJoinToMyinfo: function (e) {
         var that = this
+        console.log(e)
         db.collection('myInfo').add({
             data: {
                 type: 'draw',
                 createDate: new Date(),
-                detailID: that.data.contentId
+                detailID: that.data.contentId,
+                drawFormid: e.detail.formId,
             },
             success(res) {
                 console.log(res)
@@ -108,18 +115,17 @@ Page({
 
                 that.setData({
                     detail: res.result.data,
-                    avatarUrl: res.result.data.avatarUrl,
+                    participatorInfo: res.result.data.participatorInfo,
                     participatorQuantity: res.result.data.participators.length,
                     drawStatus: res.result.data.drawStatus,
-                    drawTime: res.result.data.showDrawTime
-
+                    drawTime: res.result.data.showDrawTime,
                 })
                 // console.log(res.result.data.winnerOpenID)
                 // console.log(app.globalData.openid)
                 if (res.result.data.drawStatus) {
                     that.setData({
                         winnerOpenID: res.result.data.winnerOpenID,
-                        iWon: res.result.data.winnerOpenID = app.globalData.openid ? true : false,
+                        iWon: res.result.data.winnerOpenID == app.globalData.openid ? true : false,
                     })
 
                 }
@@ -162,8 +168,7 @@ Page({
                                 success() {
                                     console.log('giftList record deleted')
                                     that.deleteInMyInfo()
-
-                                    wx.navigateBack()
+                                    // wx.navigateBack()
                                 },
                                 fail() {
                                     console.log('fail to delete giftList record')
@@ -198,6 +203,7 @@ Page({
             success: res => {
                 console.log(res.result)
                 // console.log(res.result)
+                wx.navigateBack()
 
             },
             fail: err => {
@@ -208,7 +214,7 @@ Page({
 
     checkjoin: function () {
         var that = this
-        var join = wx.cloud.callFunction({
+        wx.cloud.callFunction({
             name: 'runDB',
             data: {
                 db: 'giftList',
@@ -220,7 +226,8 @@ Page({
                 console.log(res.result)
 
                 that.setData({
-                    joined: res.result ? true : false
+                    joined: res.result ? true : false,
+                    buttonDisabled: false,
                 })
 
 
@@ -237,36 +244,21 @@ Page({
 
         var that = this;
         if (app.appData.userInfo == null) {
-            wx.showModal({
-                title: '微信授权登录',
-                content: '登录后体验完整功能',
-                success(res) {
-                    if (res.confirm) {
-                        wx.showLoading({
-                            title: '正在加入抽奖...',
-                        })
-                        wx.getUserInfo({
-                            success(res) {
-                                app.appData.userInfo = res.userInfo
-                                //   const nickName = res.userInfo.nickName
-                                //   const avatarUrl = res.userInfo.avatarUrl
-                                //   const gender = res.userInfo.gender // 性别 0：未知、1：男、2：女
-                                //   const province = res.userInfo.province
-                                //   const city = res.userInfo.city
-                                //   const country = res.userInfo.country
-                                that.joinLuckDraw()
-                            }
-                        })
 
-                    } else if (res.cancel) {
-                        console.log('user canceled')
-                    }
+            wx.getUserInfo({
+                success(res) {
+                    app.appData.userInfo = res.userInfo
+                    //   const nickName = res.userInfo.nickName
+                    //   const avatarUrl = res.userInfo.avatarUrl
+                    //   const gender = res.userInfo.gender // 性别 0：未知、1：男、2：女
+                    //   const province = res.userInfo.province
+                    //   const city = res.userInfo.city
+                    //   const country = res.userInfo.country
+                    that.joinLuckDraw()
                 }
             })
+
         } else {
-            wx.showLoading({
-                title: '正在加入抽奖...',
-            })
             that.joinLuckDraw()
         }
 

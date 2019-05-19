@@ -1,11 +1,9 @@
-<!--miniprogram/pages/discover/discover.wxml-->
+<!-- miniprogram/pages/discover/discover.wxml -->
 <view class="container">
-
   <view class='notetext'>
     <view>操作步骤:</view>
     <view>选择图片 -> 上传图片 -> 等待上传完成 -> 编辑文字 -> 发布</view>
   </view>
-
   <view class='header'>
     <text>添加新内容</text>
   </view>
@@ -25,7 +23,6 @@
         <image src='{{item}}'></image>
       </view>
     </view>
-
     <block wx:if='{{!isDisabled}}'>
       <view class='upload-progress'>
         <text>{{imgUrl.length}}/{{flpa.length}}</text>
@@ -34,27 +31,35 @@
       <button type="primary" bindtap="uploadImg">上传图片</button>
       <button bindtap="clearImg">重选图片</button>
     </block>
-
-
-
-
-
     <text>标题</text>
-
     <view class='textarea-wrp'>
       <input bindinput='inputTitle' wx:name="input" maxlength='20' placeholder=" 必填，最长20字" />
     </view>
-
     <text>描述</text>
-
     <view class='textarea-wrp'>
-
       <textarea bindinput="bindTextAreaInput" maxlength='100' placeholder=" 选填，最长100字" auto-height />
     </view>
-
+    <block wx:if='{{isSuperAdmin}}'>
+      <block wx:if='{{needSetTime}}'>
+        <view class='textarea-drawAfterDays'>
+          <view>
+            <picker bindchange="afterDaysPicker" value="{{drawAfterDaysIndex}}" range="{{drawAfterDays}}">
+              <text>{{drawAfterDays[drawAfterDaysIndex]}}天后开奖</text>
+            </picker>
+          </view>
+          <view>
+            <picker bindchange="timePicker" value="{{drawWhenTimeIndex}}" range="{{drawWhenTime}}">
+              <text>{{drawWhenTime[drawWhenTimeIndex]}}点开奖</text>
+            </picker>
+          </view>
+          <view>
+            <button catchtap='calDrawExecData'>计算抽奖日期</button>
+          </view>
+        </view>
+        <view>抽奖日期：{{drawExecDate}}</view>
+      </block>
+    </block>
     <button type="primary" bindtap="submitData">发布</button>
     <!-- <button type="default" form-type="reset">清空文字</button> -->
-
   </view>
-
 </view>
